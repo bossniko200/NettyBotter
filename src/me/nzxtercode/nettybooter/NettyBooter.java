@@ -130,7 +130,7 @@ public class NettyBooter {
 			return;
 		}
 		if (cantParseInt(args[1]) || cantParseInt(args[2]) || cantParseInt(args[3]) || cantParseInt(args[4])) {
-			System.err.println("Usage: java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false) -jar "
+			System.err.println("Usage: java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false -Dr=true) -jar "
 					+ (new File(NettyBooter.class.getProtectionDomain().getCodeSource().getLocation().toURI()))
 					.getName()
 					+ " 0:25565 (Method-ID) (Thread-Count) (Protocol-Version) (Duration) [(ProxyFile) (Proxy-Type)]");
@@ -139,7 +139,7 @@ public class NettyBooter {
 		if (args.length == 7) {
 			if (!args[6].equalsIgnoreCase("http") && !args[6].equalsIgnoreCase("socks4")
 					&& !args[6].equalsIgnoreCase("socks5")) {
-				System.err.println("Usage: java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false) -jar "
+				System.err.println("Usage: java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false -Dr=true) -jar "
 						+ (new File(NettyBooter.class.getProtectionDomain().getCodeSource().getLocation().toURI()))
 						.getName()
 						+ " 0:25565 (Method-ID) (Thread-Count) (Protocol-Version) (Duration) [(ProxyFile) (Proxy-Type)]");
