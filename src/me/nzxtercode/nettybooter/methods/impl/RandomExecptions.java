@@ -16,11 +16,17 @@ public class RandomExecptions implements IMethod {
 
 	public void accept(Channel channel, Proxy proxy) {
 		byte[] bytes = new byte[5 + ThreadLocalRandom.current().nextInt(65534)];
+		
 		ThreadLocalRandom.current().nextBytes(bytes);
+		
 		channel.writeAndFlush(Unpooled.buffer().writeBytes(bytes));
+		
 		NettyBootstrap.service.success++;
-		if (ThreadLocalRandom.current().nextBoolean())
+		
+		if (ThreadLocalRandom.current().nextBoolean()) {
 			channel.config().setOption(ChannelOption.SO_LINGER, 1);
+		}
+		
 		channel.close();
 	}
 }

@@ -21,10 +21,13 @@ public class QuitExceptions implements IMethod {
 
 	public void accept(Channel channel, Proxy proxy) {
 		channel.writeAndFlush(Unpooled.buffer().writeBytes(handshake.getWrappedPacket()));
+		
 		channel.writeAndFlush(Unpooled.buffer().writeBytes(new byte[] { 1 }));
-		channel.writeAndFlush(
-				Unpooled.buffer().writeBytes((new PingPacket(System.currentTimeMillis())).getWrappedPacket()));
+		
+		channel.writeAndFlush(Unpooled.buffer().writeBytes((new PingPacket(System.currentTimeMillis())).getWrappedPacket()));
+		
 		NettyBootstrap.service.success++;
+		
 		channel.close();
 	}
 }

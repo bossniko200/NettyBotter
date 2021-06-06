@@ -21,7 +21,9 @@ public class Nullping implements IMethod {
 
 	public void accept(Channel channel, Proxy proxy) {
 		ByteBuf b = Unpooled.buffer();
+		
 		ByteBufOutputStream bbbb = new ByteBufOutputStream(b);
+		
 		try {
 			bbbb.write(15);
 			bbbb.write(0);
@@ -37,9 +39,13 @@ public class Nullping implements IMethod {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		channel.writeAndFlush(b);
+		
 		channel.writeAndFlush(bbbb);
+		
 		NettyBootstrap.service.success++;
+		
 		channel.close();
 	}
 }

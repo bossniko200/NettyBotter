@@ -40,15 +40,20 @@ public class PacketOutOfRange implements IMethod {
 
 	public void accept(Channel channel, Proxy proxy) {
 		ByteBuf b = Unpooled.buffer();
+		
 		ByteBufOutputStream bbbb = new ByteBufOutputStream(b);
+		
 		try {
 			bbbb.writeUTF(this.lol);
 			bbbb.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		channel.writeAndFlush(b);
+		
 		NettyBootstrap.service.success++;
+		
 		channel.close();
 	}
 }

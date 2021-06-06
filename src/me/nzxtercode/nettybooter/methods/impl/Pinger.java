@@ -20,7 +20,9 @@ public class Pinger implements IMethod {
 
 	public void accept(Channel channel, Proxy proxy) {
 		channel.writeAndFlush(Unpooled.buffer().writeBytes(handshake.getWrappedPacket()));
+		
 		NettyBootstrap.service.success++;
+		
 		channel.close();
 	}
 }

@@ -23,8 +23,11 @@ public class Joiner implements IMethod {
 
   public void accept(Channel channel, Proxy proxy) {
     channel.writeAndFlush(Unpooled.buffer().writeBytes(handshake.getWrappedPacket()));
+    
     channel.writeAndFlush(Unpooled.buffer().writeBytes((new LoginRequest(String.valueOf(this.i++))).getWrappedPacket()));
+    
     NettyBootstrap.service.success++;
+    
     channel.close();
   }
 }
