@@ -12,8 +12,8 @@ public class EncryptionResponse extends DefinedPacket {
 	private final byte[] verifyToken;
 
 	public void write(ByteBuf buf) {
-		DefinedPacket.writeArray(this.sharedSecret, buf);
-		DefinedPacket.writeArray(this.verifyToken, buf);
+		writeArray(this.sharedSecret, buf);
+		writeArray(this.verifyToken, buf);
 	}
 
     /**

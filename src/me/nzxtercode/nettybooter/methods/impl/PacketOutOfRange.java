@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import me.nzxtercode.nettybooter.methods.interfaces.IMethod;
-import me.nzxtercode.nettybooter.proxy.ProxyManager;
+import me.nzxtercode.nettybooter.proxy.Proxy;
 import me.nzxtercode.nettybooter.utils.NettyBootstrap;
 
 /**
@@ -38,7 +38,7 @@ public class PacketOutOfRange implements IMethod {
 			this.lol = this.lol + (char) (this.r.nextInt(125) + 1);
 	}
 
-	public void accept(Channel channel, ProxyManager.Proxy proxy) {
+	public void accept(Channel channel, Proxy proxy) {
 		ByteBuf b = Unpooled.buffer();
 		ByteBufOutputStream bbbb = new ByteBufOutputStream(b);
 		try {
@@ -48,7 +48,7 @@ public class PacketOutOfRange implements IMethod {
 			e.printStackTrace();
 		}
 		channel.writeAndFlush(b);
-		NettyBootstrap.success++;
+		NettyBootstrap.service.success++;
 		channel.close();
 	}
 }

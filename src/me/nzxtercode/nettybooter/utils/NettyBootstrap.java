@@ -25,6 +25,7 @@ import io.netty.handler.proxy.Socks5ProxyHandler;
 import io.netty.util.ResourceLeakDetector;
 import me.nzxtercode.nettybooter.NettyBooter;
 import me.nzxtercode.nettybooter.methods.interfaces.IMethod;
+import me.nzxtercode.nettybooter.proxy.Proxy;
 import me.nzxtercode.nettybooter.proxy.ProxyManager;
 
 /**
@@ -32,34 +33,40 @@ import me.nzxtercode.nettybooter.proxy.ProxyManager;
  */
 public class NettyBootstrap {
 
+	public static NettyBootstrap service;
+
 	/**
 	 * The constant METHOD.
 	 */
-	public static final IMethod METHOD = NettyBooter.method;
+	public final IMethod METHOD = NettyBooter.method;
 	/**
 	 * The constant LOADER.
 	 */
-	public static final ProxyManager LOADER = new ProxyManager(NettyBooter.proxyFile);
+	public final ProxyManager LOADER = new ProxyManager(NettyBooter.proxyFile);
 	/**
 	 * The constant REMOVE_NETWORK_PROXIES.
 	 */
-	public static final boolean REMOVE_NETWORK_PROXIES = Boolean.parseBoolean(System.getProperty("rmnwp", "true"));
-	private static final long DELAY = Long.parseLong(System.getProperty("delay", "1"));
-	private static final int PER_DELAY = Integer.parseInt(System.getProperty("perdelay", "2500"));
+	public final boolean REMOVE_NETWORK_PROXIES = Boolean.parseBoolean(System.getProperty("rmnwp", "true"));
+	private final long DELAY = Long.parseLong(System.getProperty("delay", "1"));
+	private final int PER_DELAY = Integer.parseInt(System.getProperty("perdelay", "2500"));
 
 	/**
 	 * The constant success.
 	 */
-	public static volatile int success = 0;
+	public volatile int success = 0;
 	/**
 	 * The constant tryCount.
 	 */
-	public static volatile int tryCount = 0;
+	public volatile int tryCount = 0;
 
 	/**
 	 * The Clazz.
 	 */
 	public final Class<? extends SocketChannel> CLAZZ = System.getProperty("os.name").toLowerCase().contains("win") ? NioSocketChannel.class : EpollSocketChannel.class;
+
+	public NettyBootstrap() {
+		NettyBootstrap.service = this;
+	}
 
 	/**
 	 * Start.
@@ -153,17 +160,17 @@ public class NettyBootstrap {
 
 		protected void initChannel(final Channel c) {
 			try {
-				final ProxyManager.Proxy proxy = NettyBootstrap.LOADER.getProxy();
+				final Proxy proxy = LOADER.getProxy();
 				final HttpProxyHandler s = (proxy.email != null)
 						? new HttpProxyHandler(proxy.address, proxy.email, proxy.pw)
 						: new HttpProxyHandler(proxy.address);
 				s.setConnectTimeoutMillis(5000L);
 				s.connectFuture().addListener(f -> {
 					if (f.isSuccess() && s.isConnected()) {
-						NettyBootstrap.METHOD.accept(c, proxy);
+						METHOD.accept(c, proxy);
 					} else {
-						if (NettyBootstrap.REMOVE_NETWORK_PROXIES)
-							NettyBootstrap.LOADER.disabledProxies.put(proxy, System.currentTimeMillis());
+						if (REMOVE_NETWORK_PROXIES)
+							LOADER.disabledProxies.put(proxy, System.currentTimeMillis());
 						c.close();
 					}
 				});
@@ -188,16 +195,16 @@ public class NettyBootstrap {
 
 		protected void initChannel(final Channel c) {
 			try {
-				final ProxyManager.Proxy proxy = LOADER.getProxy();
+				final Proxy proxy = LOADER.getProxy();
 				final Socks5ProxyHandler s = (proxy.email != null)
 						? new Socks5ProxyHandler(proxy.address, proxy.email, proxy.pw)
 						: new Socks5ProxyHandler(proxy.address);
 				s.setConnectTimeoutMillis(5000L);
 				s.connectFuture().addListener(f -> {
 					if (f.isSuccess() && s.isConnected()) {
-						NettyBootstrap.METHOD.accept(c, proxy);
+						METHOD.accept(c, proxy);
 					} else {
-						if (NettyBootstrap.REMOVE_NETWORK_PROXIES)
+						if (REMOVE_NETWORK_PROXIES)
 							LOADER.disabledProxies.put(proxy, System.currentTimeMillis());
 						c.close();
 					}
@@ -223,15 +230,15 @@ public class NettyBootstrap {
 
 		protected void initChannel(final Channel c) {
 			try {
-				final ProxyManager.Proxy proxy = LOADER.getProxy();
+				final Proxy proxy = LOADER.getProxy();
 				final Socks4ProxyHandler s = (proxy.email != null) ? new Socks4ProxyHandler(proxy.address, proxy.email)
 						: new Socks4ProxyHandler(proxy.address);
 				s.setConnectTimeoutMillis(5000L);
 				s.connectFuture().addListener(f -> {
 					if (f.isSuccess() && s.isConnected()) {
-						NettyBootstrap.METHOD.accept(c, proxy);
+						METHOD.accept(c, proxy);
 					} else {
-						if (NettyBootstrap.REMOVE_NETWORK_PROXIES)
+						if (REMOVE_NETWORK_PROXIES)
 							LOADER.disabledProxies.put(proxy, System.currentTimeMillis());
 						c.close();
 					}
@@ -252,7 +259,7 @@ public class NettyBootstrap {
 	 */
 	public final ChannelFutureListener NO_PROXY = c -> {
 		if (c.isSuccess())
-			NettyBootstrap.METHOD.accept(c.channel(), null);
+			METHOD.accept(c.channel(), null);
 	};
 
 	/**

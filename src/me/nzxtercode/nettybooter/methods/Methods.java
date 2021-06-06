@@ -10,6 +10,7 @@ import me.nzxtercode.nettybooter.methods.impl.Nullping;
 import me.nzxtercode.nettybooter.methods.impl.RandomExecptions;
 import me.nzxtercode.nettybooter.methods.impl.QuitExceptions;
 import me.nzxtercode.nettybooter.methods.interfaces.IMethod;
+import me.nzxtercode.nettybooter.packets.Handshake;
 
 /**
  * The type Methods.
@@ -19,22 +20,28 @@ public class Methods {
     /**
      * The constant METHODS.
      */
-    public static final HashMap<Integer, IMethod> METHODS = new HashMap<>();
+    public final HashMap<Integer, IMethod> METHODS = new HashMap<>();
 
-    /**
+    private final Handshake handshake;
+
+	public Methods(Handshake handshake) {
+		this.handshake = handshake;
+	}
+
+	/**
      * Gets by id.
      *
      * @param i the
      * @return the by id
      */
-    public static IMethod getByID(int i) {
+    public IMethod getByID(int i) {
 		return METHODS.getOrDefault(i, (c, p) -> {
 			c.close();
 			System.err.println("invalid method id: " + i);
 		});
 	}
 
-	private static void registerMethod(int i, IMethod m) {
+	private void registerMethod(int i, IMethod m) {
 		if (METHODS.containsKey(i))
 			throw new IllegalStateException("Method with id " + i + " is already existing.");
 		METHODS.put(i, m);
@@ -43,13 +50,13 @@ public class Methods {
     /**
      * Init.
      */
-    public static void init() {
-		registerMethod(1, new Pinger());
-		registerMethod(2, new QuitExceptions());
+    public void init() {
+		registerMethod(1, new Pinger(handshake));
+		registerMethod(2, new QuitExceptions(handshake));
 		registerMethod(3, new RandomExecptions());
 		registerMethod(4, new PacketOutOfRange());
-		registerMethod(5, new Joiner());
+		registerMethod(5, new Joiner(handshake));
 		registerMethod(6, new Nullping());
-		registerMethod(7, new ConsoleSpammer());
+		registerMethod(7, new ConsoleSpammer(handshake));
 	}
 }

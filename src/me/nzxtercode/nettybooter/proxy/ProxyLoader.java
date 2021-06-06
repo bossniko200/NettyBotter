@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class ProxyLoader {
 
-	private static final String[] http = new String[] {
+	private final String[] http = new String[] {
 			"https://api.proxyscrape.com/?request=getproxies&proxytype=http",
 			"https://www.proxyscan.io/download?type=http",
 			
@@ -18,14 +18,14 @@ public class ProxyLoader {
 			"https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt"
 	};
 	
-	private static final String[] https = new String[] {
+	private final String[] https = new String[] {
 			"https://api.proxyscrape.com/?request=getproxies&proxytype=https",
 			"https://www.proxyscan.io/download?type=https",
 			
 			"https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/https.txt"
 	};
 	
-	private static final String[] socks4 = new String[] {
+	private final String[] socks4 = new String[] {
 			"https://api.proxyscrape.com/?request=getproxies&proxytype=socks4",
 			"https://www.proxyscan.io/download?type=socks4",
 			
@@ -33,7 +33,7 @@ public class ProxyLoader {
 			"https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks4.txt"
 	};
 	
-	private static final String[] socks5 = new String[] {
+	private final String[] socks5 = new String[] {
 			"https://api.proxyscrape.com/?request=getproxies&proxytype=socks5",
 			"https://www.proxyscan.io/download?type=socks5",
 			
@@ -41,7 +41,7 @@ public class ProxyLoader {
 			"https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks5.txt"
 	};
 	
-	private static final String[] all = new String[] {
+	private final String[] all = new String[] {
 			"https://api.proxyscrape.com/?request=getproxies&proxytype=socks4",
 			"https://www.proxyscan.io/download?type=socks4",
 			
@@ -68,35 +68,35 @@ public class ProxyLoader {
 	/**
 	 * The constant proxiesFile4.
 	 */
-	public static File proxiesFile4 = new File("./socks4_proxies.txt");
+	public File proxiesFile4 = new File("./socks4_proxies.txt");
 	/**
 	 * The constant proxiesFile5.
 	 */
-	public static File proxiesFile5 = new File("./socks5_proxies.txt");
+	public File proxiesFile5 = new File("./socks5_proxies.txt");
 	/**
 	 * The constant proxiesFileHTTP.
 	 */
-	public static File proxiesFileHTTP = new File("./http_proxies.txt");
+	public File proxiesFileHTTP = new File("./http_proxies.txt");
 	/**
 	 * The constant proxiesFileHTTPS.
 	 */
-	public static File proxiesFileHTTPS = new File("./https_proxies.txt");
+	public File proxiesFileHTTPS = new File("./https_proxies.txt");
 	/**
 	 * The constant proxiesFileALL.
 	 */
-	public static File proxiesFileALL = new File("./all_proxies.txt");
+	public File proxiesFileALL = new File("./all_proxies.txt");
 
 
-	private static final List<String> SOCKS4 = getProxies(socks4);
-	private static final List<String> SOCKS5 = getProxies(socks5);
-	private static final List<String> HTTP = getProxies(http);
-	private static final List<String> HTTPS = getProxies(https);
-	private static final List<String> ALL = getProxies(all);
+	private final List<String> SOCKS4 = getProxies(socks4);
+	private final List<String> SOCKS5 = getProxies(socks5);
+	private final List<String> HTTP = getProxies(http);
+	private final List<String> HTTPS = getProxies(https);
+	private final List<String> ALL = getProxies(all);
 
 	/**
 	 * Load.
 	 */
-	public static void load() {
+	public void load() {
 		writeToFile(SOCKS4, proxiesFile4);
 		writeToFile(SOCKS5, proxiesFile5);
 		writeToFile(HTTP, proxiesFileHTTP);
@@ -104,7 +104,7 @@ public class ProxyLoader {
 		writeToFile(ALL, proxiesFileALL);
 	}
 
-	private static void writeToFile(List<String> proxies, File proxyFile) {
+	private void writeToFile(List<String> proxies, File proxyFile) {
 		try {
 			final FileWriter fileWriter = new FileWriter(proxyFile);
 			for (String proxy : proxies) {
@@ -117,7 +117,7 @@ public class ProxyLoader {
 		}
 	}
 
-	private static List<String> getProxies(String[] type) {
+	private List<String> getProxies(String[] type) {
 		List<String> proxies = new LinkedList<>();
 		for (String proxyAPIUrl : type) {
 			try {

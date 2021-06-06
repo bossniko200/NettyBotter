@@ -7,7 +7,7 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import me.nzxtercode.nettybooter.methods.interfaces.IMethod;
-import me.nzxtercode.nettybooter.proxy.ProxyManager;
+import me.nzxtercode.nettybooter.proxy.Proxy;
 import me.nzxtercode.nettybooter.utils.NettyBootstrap;
 
 /**
@@ -19,7 +19,7 @@ public class Nullping implements IMethod {
 	 */
 	final int a = Integer.parseInt(System.getProperty("len", "25555"));
 
-	public void accept(Channel channel, ProxyManager.Proxy proxy) {
+	public void accept(Channel channel, Proxy proxy) {
 		ByteBuf b = Unpooled.buffer();
 		ByteBufOutputStream bbbb = new ByteBufOutputStream(b);
 		try {
@@ -39,7 +39,7 @@ public class Nullping implements IMethod {
 		}
 		channel.writeAndFlush(b);
 		channel.writeAndFlush(bbbb);
-		NettyBootstrap.success++;
+		NettyBootstrap.service.success++;
 		channel.close();
 	}
 }

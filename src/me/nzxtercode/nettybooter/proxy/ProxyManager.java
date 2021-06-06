@@ -31,47 +31,6 @@ public class ProxyManager {
 	public volatile List<Proxy> finals = Collections.synchronizedList(new ArrayList<>());
 
 	/**
-	 * The type Proxy.
-	 */
-	public static class Proxy {
-		/**
-		 * The Address.
-		 */
-		public final InetSocketAddress address;
-
-		/**
-		 * The Email.
-		 */
-		public String email = null;
-		/**
-		 * The Pw.
-		 */
-		public String pw = null;
-
-		/**
-		 * Instantiates a new Proxy.
-		 *
-		 * @param address the address
-		 */
-		public Proxy(InetSocketAddress address) {
-			this.address = address;
-		}
-
-		/**
-		 * Instantiates a new Proxy.
-		 *
-		 * @param address the address
-		 * @param email   the email
-		 * @param pw      the pw
-		 */
-		public Proxy(InetSocketAddress address, String email, String pw) {
-			this.address = address;
-			this.email = email;
-			this.pw = pw;
-		}
-	}
-
-	/**
 	 * Instantiates a new Proxy manager.
 	 *
 	 * @param file the file
@@ -143,7 +102,7 @@ public class ProxyManager {
 			get = 0;
 			this.at = 1;
 		}
-		if (NettyBootstrap.REMOVE_NETWORK_PROXIES)
+		if (NettyBootstrap.service.REMOVE_NETWORK_PROXIES)
 			return this.finals.get(get);
 		Proxy proxie = this.finals.get(get);
 		Long time = this.disabledProxies.get(proxie);

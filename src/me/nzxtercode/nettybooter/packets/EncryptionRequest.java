@@ -22,8 +22,8 @@ public class EncryptionRequest extends DefinedPacket {
     public byte[] verifyToken;
 
 	public void read(ByteBuf buf) {
-		this.serverId = DefinedPacket.readString(buf);
-		this.publicKey = DefinedPacket.readArray(buf);
-		this.verifyToken = DefinedPacket.readArray(buf);
+		this.serverId = readString(buf);
+		this.publicKey = readArray(buf);
+		this.verifyToken = readArray(buf);
 	}
 }

@@ -11,16 +11,18 @@ import javax.naming.directory.InitialDirContext;
  * The type Server address.
  */
 public class ServerAddress {
-	private final String ipAddress;
+	private String ipAddress;
 
-	private final int serverPort;
+	private int serverPort;
 
 	private ServerAddress(String ip, int port) {
 		this.ipAddress = ip;
 		this.serverPort = port;
 	}
 
-    /**
+	public ServerAddress() { }
+
+	/**
      * Gets ip.
      *
      * @return the ip
@@ -48,7 +50,7 @@ public class ServerAddress {
      * @param string the string
      * @return the address
      */
-    public static ServerAddress getAddress(String string) {
+    public ServerAddress getAddress(String string) {
 		if (string == null)
 			return null;
 		String[] astring = string.split(":");
@@ -77,7 +79,7 @@ public class ServerAddress {
 		return new ServerAddress(s2, j);
 	}
 
-	private static String[] getServerAddress(String p_78863_0_) {
+	private String[] getServerAddress(String p_78863_0_) {
 		try {
 			Class.forName("com.sun.jndi.dns.DnsContextFactory");
 			Hashtable<Object, Object> hashtable = new Hashtable<>();
@@ -93,7 +95,7 @@ public class ServerAddress {
 		}
 	}
 
-	private static int parseIntWithDefault(String p_78862_0_) {
+	private int parseIntWithDefault(String p_78862_0_) {
 		try {
 			return Integer.parseInt(p_78862_0_.trim());
 		} catch (Exception var3) {

@@ -22,7 +22,7 @@ public class LoginRequest extends DefinedPacket {
 	}
 
 	public void write(ByteBuf buf) {
-		DefinedPacket.writeString(this.data, buf);
+		writeString(this.data, buf);
 	}
 
     /**
@@ -31,7 +31,7 @@ public class LoginRequest extends DefinedPacket {
      * @param buf the buf
      */
     public void writeNoCap(ByteBuf buf) {
-		DefinedPacket.writeStringNoCap(this.data, buf);
+		writeStringNoCap(this.data, buf);
 	}
 
     /**
