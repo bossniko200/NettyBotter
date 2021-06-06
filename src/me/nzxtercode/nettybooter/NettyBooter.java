@@ -78,7 +78,7 @@ public class NettyBooter {
 	 * @param args the input arguments
 	 * @throws Throwable the throwable
 	 */
-	 public static void main(String[] args) throws Throwable {
+	public static void main(String[] args) throws Throwable {
 		System.setOut(new PrintStream(System.out) {
 			public void println(String x) {
 				if (RAINBOW && LinuxColors.EMPTY.support) {
@@ -105,14 +105,14 @@ public class NettyBooter {
 		if (args.length != 5 && args.length != 7) {
 			System.err.println("NettyBooter b7 v2 ALPHA by NZXTERCODE | https://dsc.gg/nzxterdc");
 			System.err.println();
-			System.err.println("java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false) -jar "
+			System.err.println("java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false -Dr=false -Dlen=25555) -jar "
 					+ (new File(NettyBooter.class.getProtectionDomain().getCodeSource().getLocation().toURI()))
-					.getName()
+							.getName()
 					+ " 0:25565 (Method-ID) (Thread-Count) (Protocol-Version) (Duration) [(ProxyFile) (Proxy-Type)]");
 			System.err
-					.println("java -Dperdelay=2500 -Ddelay=1 -Drmnwp=false -jar "
+					.println("java -Dperdelay=2500 -Ddelay=1 -Drmnwp=false -Dr=false -Dlen=25555 -jar "
 							+ (new File(NettyBooter.class.getProtectionDomain().getCodeSource().getLocation().toURI()))
-							.getName()
+									.getName()
 							+ " example.net/0:25565 1-7 5 47 60 socks4_proxies.txt http/socks4/socks5");
 			System.err.println();
 			System.err.println("Methods: 7");
@@ -130,18 +130,18 @@ public class NettyBooter {
 			return;
 		}
 		if (cantParseInt(args[1]) || cantParseInt(args[2]) || cantParseInt(args[3]) || cantParseInt(args[4])) {
-			System.err.println("Usage: java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false -Dr=true) -jar "
+			System.err.println("Usage: java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false -Dr=false -Dlen=25555) -jar "
 					+ (new File(NettyBooter.class.getProtectionDomain().getCodeSource().getLocation().toURI()))
-					.getName()
+							.getName()
 					+ " 0:25565 (Method-ID) (Thread-Count) (Protocol-Version) (Duration) [(ProxyFile) (Proxy-Type)]");
 			return;
 		}
 		if (args.length == 7) {
 			if (!args[6].equalsIgnoreCase("http") && !args[6].equalsIgnoreCase("socks4")
 					&& !args[6].equalsIgnoreCase("socks5")) {
-				System.err.println("Usage: java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false -Dr=true) -jar "
+				System.err.println("Usage: java (-Dperdelay=2500 -Ddelay=1 -Drmnwp=false -Dr=false -Dlen=25555) -jar "
 						+ (new File(NettyBooter.class.getProtectionDomain().getCodeSource().getLocation().toURI()))
-						.getName()
+								.getName()
 						+ " 0:25565 (Method-ID) (Thread-Count) (Protocol-Version) (Duration) [(ProxyFile) (Proxy-Type)]");
 				return;
 			}
@@ -201,8 +201,8 @@ public class NettyBooter {
 			} while (!msg.equals("bb") && !msg.equals("b") && !msg.equals("end") && !msg.equals("stop")
 					&& !msg.equals("close") && !msg.equals("c"));
 			scanner.close();
-			System.out.println(
-					LinuxColors.EMPTY.support ? "\033[1;31mShutting down the attack!\nBB" : "Shutting down the attack!\nBB");
+			System.out.println(LinuxColors.EMPTY.support ? "\033[1;31mShutting down the attack!\nBB"
+					: "Shutting down the attack!\nBB");
 			System.exit(0);
 		})).start();
 		methods = new Methods(new Handshake(NettyBooter.protocolID, NettyBooter.srvRecord, NettyBooter.port, 2));
